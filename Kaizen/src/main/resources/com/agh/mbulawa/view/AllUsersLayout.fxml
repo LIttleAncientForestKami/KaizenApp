@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane minHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.AllUsersLayoutController">
+   <children>
+      <BorderPane prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <bottom>
+            <HBox BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="20.0" />
+               </BorderPane.margin>
+               <children>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label text="Hasło" />
+                              <PasswordField fx:id="pass" />
+                           </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" onAction="#handleManage" prefHeight="25.0" prefWidth="73.0" text="Zarządzaj" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <ButtonBar prefHeight="40.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                    <buttons>
+                      <Button fx:id="delButton" mnemonicParsing="false" onAction="#handleRemove" text="Usuń" />
+                        <Button fx:id="editButton" mnemonicParsing="false" onAction="#handlaEdit" text="Edytuj" />
+                    </buttons>
+                  </ButtonBar>
+                  <ButtonBar prefHeight="40.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                    <buttons>
+                        <Button mnemonicParsing="false" onAction="#handleExport" text="Eksportuj" />
+                      <Button mnemonicParsing="false" onAction="#handleExit" text="Zamknij" />
+                    </buttons>
+                  </ButtonBar>
+               </children>
+            </HBox>
+         </bottom>
+         <center>
+            <TableView fx:id="usersTable" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="idColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="150.0" resizable="false" text="ID" />
+                <TableColumn fx:id="firstNameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="150.0" resizable="false" text="IMIĘ" />
+                  <TableColumn fx:id="lastNameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="150.0" resizable="false" text="NAZWISKO" />
+                  <TableColumn fx:id="loginColumn" editable="false" prefWidth="150.0" resizable="false" text="LOGIN" />
+              </columns>
+            </TableView>
+         </center>
+      </BorderPane>
+      <ProgressIndicator fx:id="indicator" prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane focusTraversable="true" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.IdeaStatisticsController">
+	<children>
+		<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="402.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<contextMenu>
+				<ContextMenu fx:id="menu">
+					<items>
+						<MenuItem fx:id="item" mnemonicParsing="false" onAction="#handleSaveChartImage" text="Zapisz obraz wykresu" />
+					</items>
+				</ContextMenu>
+			</contextMenu>
+         <content>
+            <TilePane>
+               <children>
+                  <BarChart fx:id="ideaBar" title="Ilość pomysłów" verticalGridLinesVisible="false">
+                    <xAxis>
+                      <CategoryAxis label="Nazwiska" side="BOTTOM" tickLabelRotation="-90.0" fx:id="xAxis" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="yAxis" side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+               </children>
+            </TilePane>
+         </content>
+		</ScrollPane>
+	</children>
+</AnchorPane>
