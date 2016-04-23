@@ -137,16 +137,26 @@ public class IdeaStatisticsController {
 			}
 			usersNames.add(u.getLogin());
 			userIdeasList = ideaDaoImpl.getUserIdeasList(u.getId());
+			List<Idea> ideaListTemp = new ArrayList<>();
+			ideaListTemp.addAll(userIdeasList);
 
-			for (int i = 0; i < userIdeasList.size(); i++) {
-				Idea idea = userIdeasList.get(i);
+			System.out.println(ideaListTemp.size());
+			for (int i = 0; i < ideaListTemp.size(); i++) {
+				Idea idea = ideaListTemp.get(i);
 				LocalDate date = LocalDate.parse(idea.getAddDate());
+
 				if (!(fromValue == null || toValue == null)) {
-					if (!(date.isAfter(fromValue) && (date.isBefore(toValue) || date.isEqual(date)))) {
-						userIdeasList.remove(i);
+					boolean isAfter = date.isAfter(fromValue);
+					boolean isBefore = date.isBefore(toValue);
+					boolean isEqual = date.isEqual(fromValue) || date.isEqual(toValue);
+					boolean dateFits = (isAfter || isEqual) && (isBefore || isEqual);
+
+					if (!dateFits) {
+						userIdeasList.remove(idea);
 					}
 				}
 			}
+			System.out.println(userIdeasList.size());
 			numberOfUsersIdeas.add(userIdeasList.size());
 		}
 
