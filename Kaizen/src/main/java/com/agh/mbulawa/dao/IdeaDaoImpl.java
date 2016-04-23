@@ -1,6 +1,7 @@
 package com.agh.mbulawa.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,7 +63,7 @@ public class IdeaDaoImpl implements IdeaDao {
 	public void createTable() {
 
 		String createIdeasTableQuery = "CREATE TABLE IF NOT EXISTS Pomysły (id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ " Kategoria varchar(255), Nazwa varchar(255), Treść varchar(255), id_Pracownika int)";
+				+ " Kategoria varchar(255), Nazwa varchar(255), Treść varchar(255), id_Pracownika int, data_dodania datetime default current_datetime, data_edycji datetime default current_datetime, status varchar(255))";
 		try {
 			// createConnection();
 			boolean execute = statement.execute(createIdeasTableQuery);
@@ -84,9 +85,13 @@ public class IdeaDaoImpl implements IdeaDao {
 
 	@Override
 	public boolean addIdea(Idea idea, int userId) {
-		String addIdeaQuery = "INSERT INTO Pomysły VALUES (NULL, ?, ?, ?, ?)";
+		String addIdeaQuery = "INSERT INTO Pomysły VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
 
 		System.out.println("Dodawanie pomysłu do bazy...");
+
+		java.util.Date date = new java.util.Date();
+
+		Date sqlDate = new Date(date.getTime());
 
 		try {
 			// createConnection();
@@ -95,6 +100,9 @@ public class IdeaDaoImpl implements IdeaDao {
 			prepareStatement.setString(2, idea.getName());
 			prepareStatement.setString(3, idea.getContent());
 			prepareStatement.setInt(4, userId);
+			prepareStatement.setDate(5, sqlDate);
+			prepareStatement.setDate(6, sqlDate);
+			prepareStatement.setString(7, idea.getStatus());
 			prepareStatement.executeUpdate();
 			// closeConnection();
 			System.out.println("Pomyślnie dodano pomysł do bazy danych.");
@@ -120,15 +128,21 @@ public class IdeaDaoImpl implements IdeaDao {
 			ResultSet result = statement.executeQuery(getIdeaQuery);
 			result.next();
 
-			String category = result.getString(2);
-			String name = result.getString(3);
-			String content = result.getString(4);
-			int userId = result.getInt(5);
+			String category = result.getString(1);
+			String name = result.getString(2);
+			String content = result.getString(3);
+			int userId = result.getInt(4);
+			Date addDate = result.getDate(6);
+			Date editDate = result.getDate(7);
+			String status = result.getString(8);
 
 			Idea idea = new Idea(category, name, content);
 
 			idea.setId(id);
 			idea.setUserId(userId);
+			idea.setAddDate(addDate);
+			idea.setEditDate(editDate);
+			idea.setStatus(status);
 			result.close();
 			// closeConnection();
 
@@ -179,7 +193,7 @@ public class IdeaDaoImpl implements IdeaDao {
 		System.out.println("Pobieranie wszystkich pomysłów z bazy...");
 
 		try {
-			
+
 			ResultSet result = statement.executeQuery(getIdeaQuery);
 			while (result.next()) {
 
@@ -188,15 +202,21 @@ public class IdeaDaoImpl implements IdeaDao {
 				String name = result.getString(3);
 				String content = result.getString(4);
 				int userId = result.getInt(5);
+				Date addDate = result.getDate(6);
+				Date editDate = result.getDate(7);
+				String status = result.getString(8);
 
 				Idea idea = new Idea(category, name, content);
 				idea.setId(id);
 				idea.setUserId(userId);
+				idea.setAddDate(addDate);
+				idea.setEditDate(editDate);
+				idea.setStatus(status);
 				ideas.add(idea);
 			}
 			System.out.println("Pomyślnie pobrano wszystkie pomysły z bazy danych.");
 			result.close();
-			
+
 			return ideas;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -214,7 +234,7 @@ public class IdeaDaoImpl implements IdeaDao {
 		System.out.println("Pobieranie pomysłów pracownika o id " + userId + " z bazy...");
 
 		try {
-			
+
 			ResultSet result = statement.executeQuery(getIdeaQuery);
 			while (result.next()) {
 
@@ -222,15 +242,21 @@ public class IdeaDaoImpl implements IdeaDao {
 				String category = result.getString(2);
 				String name = result.getString(3);
 				String content = result.getString(4);
+				Date addDate = result.getDate(6);
+				Date editDate = result.getDate(7);
+				String status = result.getString(8);
 
 				Idea idea = new Idea(category, name, content);
 				idea.setId(id);
 				idea.setUserId(userId);
+				idea.setAddDate(addDate);
+				idea.setEditDate(editDate);
+				idea.setStatus(status);
 				ideas.add(idea);
 			}
 			System.out.println("Pomyślnie pobrano pomysły pracownika o id = " + userId + " z bazy danych.");
 			result.close();
-			
+
 			return ideas;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -242,11 +268,22 @@ public class IdeaDaoImpl implements IdeaDao {
 	@Override
 	public boolean updateIdea(Idea idea) {
 
-		String updateIdeaQuery = "UPDATE Pomysły SET Kategoria= '" + idea.getCategory() + "', Nazwa= '" + idea.getName()
-				+ "', Treść= '" + idea.getContent() + "' WHERE id = '" + idea.getId() + "'";
+		java.util.Date date = new java.util.Date();
+
+		Date sqlDate = new Date(date.getTime());
+
+		System.out.println(sqlDate);
+
+		String updateIdeaQuery = "UPDATE Pomysły SET Kategoria= ?, Nazwa= ?, Treść= ?, data_edycji= ? WHERE id = ?";
 
 		try {
-			statement.executeUpdate(updateIdeaQuery);
+			PreparedStatement prepareStatement = connection.prepareStatement(updateIdeaQuery);
+			prepareStatement.setString(1, idea.getCategory());
+			prepareStatement.setString(2, idea.getName());
+			prepareStatement.setString(3, idea.getContent());
+			prepareStatement.setDate(4, sqlDate);
+			prepareStatement.setInt(5, idea.getId());
+			prepareStatement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -262,10 +299,33 @@ public class IdeaDaoImpl implements IdeaDao {
 		try {
 			statement.executeUpdate(removeIdeaQuery);
 			System.out.println("Pomyślnie usunięto pomysł o id " + id);
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+		return false;
+	}
+
+	@Override
+	public boolean changeIdeaStatus(int id, String status) {
+		java.util.Date date = new java.util.Date();
+
+		Date sqlDate = new Date(date.getTime());
+
+		System.out.println(sqlDate);
+
+		String updateIdeaQuery = "UPDATE Pomysły SET status= ? WHERE id = ?";
+
+		try {
+			PreparedStatement prepareStatement = connection.prepareStatement(updateIdeaQuery);
+			prepareStatement.setString(1, status);
+			prepareStatement.setInt(2, id);
+			prepareStatement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

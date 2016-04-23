@@ -8,6 +8,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class LoginLayoutController {
 
@@ -62,7 +64,9 @@ public class LoginLayoutController {
 			if (isAdmin == 0) {
 				main.showMainUserLayout();
 			} else if (isAdmin == 1) {
-				main.showAdminLayout();
+				main.showAdminLayout(1);
+			} else if (isAdmin == 2) {
+				main.showAdminLayout(2);
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -73,6 +77,17 @@ public class LoginLayoutController {
 
 			alert.showAndWait();
 		}
+	}
+
+	@FXML
+	private void handleEnterPressed(KeyEvent event) {
+
+		if (event.getCode().equals(KeyCode.ENTER)) {
+			handleLogin();
+		} else if (event.getCode().equals(KeyCode.ESCAPE)) {
+			System.exit(0);
+		}
+
 	}
 
 	// Methods used in previous version of program.

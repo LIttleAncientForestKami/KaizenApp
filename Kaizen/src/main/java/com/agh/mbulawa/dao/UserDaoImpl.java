@@ -60,7 +60,7 @@ public class UserDaoImpl implements UserDao {
 
 	public void createTable() {
 		String createUserTableQuery = "CREATE TABLE IF NOT EXISTS Pracownicy (id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ " Imię varchar(255), Nazwisko varchar(255), Login varchar(255), Hasło varchar(255), Administrator INTEGER)";
+				+ " Imię varchar(255), Nazwisko varchar(255), Login varchar(255), Wydział varchar(255), Hasło varchar(255), Administrator INTEGER)";
 		try {
 
 			boolean execute = statement.execute(createUserTableQuery);
@@ -83,7 +83,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean addUser(User user) {
 
-		String addUserQuery = "INSERT INTO Pracownicy VALUES (NULL, ?, ?, ?, ?, ?)";
+		String addUserQuery = "INSERT INTO Pracownicy VALUES (NULL, ?, ?, ?, ?, ?, ?)";
 
 		System.out.println("Dodawanie urzytkownika do bazy...");
 
@@ -93,8 +93,9 @@ public class UserDaoImpl implements UserDao {
 			prepareStatement.setString(1, user.getFirstName());
 			prepareStatement.setString(2, user.getLastName());
 			prepareStatement.setString(3, user.getLogin());
-			prepareStatement.setString(4, user.getPassword());
-			prepareStatement.setInt(5, user.getIsAdmin());
+			prepareStatement.setString(4, user.getFaculty());
+			prepareStatement.setString(5, user.getPassword());
+			prepareStatement.setInt(6, user.getIsAdmin());
 			prepareStatement.executeUpdate();
 
 			System.out.println("Pomyślnie dodano użytkownika do bazy danych.");
@@ -120,11 +121,12 @@ public class UserDaoImpl implements UserDao {
 			String firstName = result.getString(2);
 			String lastName = result.getString(3);
 			String login = result.getString(4);
-			String pass = result.getString(5);
+			String faculty = result.getString(5);
+			String pass = result.getString(6);
 
-			int isAdmin = result.getInt(6);
+			int isAdmin = result.getInt(7);
 
-			User user = new User(firstName, lastName, login, pass);
+			User user = new User(firstName, lastName, login, faculty, pass);
 
 			user.setId(id);
 			user.setIsAdmin(isAdmin);
@@ -158,11 +160,12 @@ public class UserDaoImpl implements UserDao {
 				String firstName = (result.getString(2));
 				String lastName = (result.getString(3));
 				String login = (result.getString(4));
-				String password = (result.getString(5));
+				String faculty = (result.getString(5));
+				String password = (result.getString(6));
 
-				int isAdmin = result.getInt(6);
+				int isAdmin = result.getInt(7);
 
-				User user = new User(firstName, lastName, login, password);
+				User user = new User(firstName, lastName, login, faculty, password);
 				user.setId(id);
 				user.setIsAdmin(isAdmin);
 				users.add(user);
@@ -182,8 +185,9 @@ public class UserDaoImpl implements UserDao {
 	public boolean updateUser(User user) {
 
 		String updateUserQuery = "UPDATE Pracownicy SET Imię = '" + user.getFirstName() + "', Nazwisko = '"
-				+ user.getLastName() + "', Login = '" + user.getLogin() + "', Hasło = '" + user.getPassword()
-				+ "', Administrator ='" + user.getIsAdmin() + "' WHERE id = '" + user.getId() + "'";
+				+ user.getLastName() + "', Login = '" + user.getLogin() + "', Wydział = '" + user.getFaculty()
+				+ "', Hasło = '" + user.getPassword() + "', Administrator ='" + user.getIsAdmin() + "' WHERE id = '"
+				+ user.getId() + "'";
 		System.out.println("Aktualizacja pracownika o id: " + user.getId());
 		try {
 
@@ -234,17 +238,15 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public int isUserAdmin(int id) {
-		
+
 		String getUserRightsQuery = "SELECT Administrator FROM Pracownicy WHERE id = '" + id + "'";
-		try{
+		try {
 			ResultSet result = statement.executeQuery(getUserRightsQuery);
 			result.next();
 			int isAdmin = result.getInt(1);
-			System.out.println(isAdmin);
-			
 			return isAdmin;
-			
-		}catch(SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return -1;
 		}

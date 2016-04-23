@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.agh.mbulawa.Main;
@@ -23,7 +24,10 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -37,7 +41,7 @@ public class AdminLayoutController {
 	@FXML
 	private TableView<User> usersTable;
 	@FXML
-	private TableColumn<User, Integer> userIdColumn;
+	private TableColumn<User, Integer> userRowNumberColumn;
 	@FXML
 	private TableColumn<User, String> firstNameColumn;
 	@FXML
@@ -51,13 +55,20 @@ public class AdminLayoutController {
 	@FXML
 	private TableView<Idea> ideasTable;
 	@FXML
-	private TableColumn<Idea, Integer> ideaIdColumn;
+	private TableColumn<Idea, Integer> ideaRowNumberColumn;
 	@FXML
 	private TableColumn<Idea, String> nameColumn;
 	@FXML
 	private TableColumn<Idea, String> categoryColumn;
 	@FXML
 	private TableColumn<Idea, Integer> authorColumn;
+	@FXML
+	private TableColumn<Idea, String> addDateColumn;
+	@FXML
+	private TableColumn<Idea, String> editDateColumn;
+	@FXML
+	private TableColumn<Idea, String> statusColumn;
+
 	// Buttons
 	@FXML
 	private Button editUserButton;
@@ -68,7 +79,12 @@ public class AdminLayoutController {
 	@FXML
 	private Button delIdeaButton;
 	@FXML
+	private Button changeIdeaStatusButton;
+	@FXML
 	private Button showIdeasButton;
+
+	@FXML
+	private ChoiceBox<String> statusChoiceBox;
 
 	@FXML
 	private ProgressIndicator indicator;
@@ -76,6 +92,9 @@ public class AdminLayoutController {
 	private Main main;
 	private ObservableList<User> usersList = FXCollections.observableArrayList();
 	private ObservableList<Idea> ideasList = FXCollections.observableArrayList();
+
+	private ObservableList<String> statusList = FXCollections.observableArrayList();
+	private int rights;
 
 	public void setMain(Main main) {
 		this.main = main;
@@ -89,6 +108,17 @@ public class AdminLayoutController {
 
 		indicator.setVisible(false);
 
+		statusList.add("Dodany");
+		statusList.add("Zaakceptowany");
+		statusList.add("W realizacji");
+		statusList.add("Zawieszony");
+		statusList.add("Zrealizowany");
+		statusList.add("Odrzucony");
+
+		statusChoiceBox.getItems().addAll(statusList);
+
+		statusChoiceBox.getSelectionModel().selectFirst();
+
 		usersTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		ideasTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -98,11 +128,13 @@ public class AdminLayoutController {
 
 		editIdeaButton.setDisable(true);
 		delIdeaButton.setDisable(true);
+		changeIdeaStatusButton.setDisable(true);
+		statusChoiceBox.setDisable(true);
 
 		usersTable.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> enableUserButtons());
 		ideasTable.getSelectionModel().selectedItemProperty()
-				.addListener((observable, oldValue, newValue) -> enableIdeaButtons());
+				.addListener((observable, oldValue, newValue) -> enableIdeaElements());
 
 		new Thread(new Runnable() {
 
@@ -116,30 +148,47 @@ public class AdminLayoutController {
 
 					@Override
 					public void run() {
-						userIdColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+						userRowNumberColumn
+								.setCellValueFactory(cellData -> cellData.getValue().rowNumberProperty().asObject());
 						firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
 						lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
 						loginColumn.setCellValueFactory(cellData -> cellData.getValue().loginProperty());
 						amountOfIdeasColumn.setCellValueFactory(
 								cellData -> cellData.getValue().amountOfIdeasProperty().asObject());
 
-						userIdColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(5));
-						firstNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(5));
-						lastNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(5));
-						loginColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(5));
-						amountOfIdeasColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(5));
+						int userColumntDivider = 4;
+
+						userRowNumberColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(30));
+						firstNameColumn.prefWidthProperty().bind((usersTable.widthProperty()
+								.subtract(userRowNumberColumn.widthProperty().get()).divide(userColumntDivider)));
+						lastNameColumn.prefWidthProperty().bind((usersTable.widthProperty()
+								.subtract(userRowNumberColumn.widthProperty().get()).divide(userColumntDivider)));
+						loginColumn.prefWidthProperty().bind((usersTable.widthProperty()
+								.subtract(userRowNumberColumn.widthProperty().get()).divide(userColumntDivider)));
+						amountOfIdeasColumn.prefWidthProperty().bind((usersTable.widthProperty()
+								.subtract(userRowNumberColumn.widthProperty().get()).divide(userColumntDivider)));
 
 						usersTable.setItems(usersList);
 
-						ideaIdColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+						ideaRowNumberColumn
+								.setCellValueFactory(cellData -> cellData.getValue().rowNumberProperty().asObject());
 						nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 						categoryColumn.setCellValueFactory(cellData -> cellData.getValue().categoryProperty());
 						authorColumn.setCellValueFactory(cellData -> cellData.getValue().userIdProperty().asObject());
+						addDateColumn.setCellValueFactory(cellData -> cellData.getValue().addDateProperty());
+						editDateColumn.setCellValueFactory(cellData -> cellData.getValue().editDateProperty());
+						statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
-						ideaIdColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(4));
-						nameColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(4));
-						categoryColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(4));
-						authorColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(4));
+						int ideasColumntDivider = 7;
+
+						ideaRowNumberColumn.prefWidthProperty()
+								.bind(ideasTable.widthProperty().divide(ideasColumntDivider));
+						nameColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(ideasColumntDivider));
+						categoryColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(ideasColumntDivider));
+						authorColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(ideasColumntDivider));
+						addDateColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(ideasColumntDivider));
+						editDateColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(ideasColumntDivider));
+						statusColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(ideasColumntDivider));
 
 						ideasTable.setItems(ideasList);
 					}
@@ -151,31 +200,35 @@ public class AdminLayoutController {
 
 	public void createUsersList() {
 		UserDaoImpl userDaoImpl = new UserDaoImpl();
-		userDaoImpl.createConnection();
-
 		IdeaDaoImpl ideaDaoImpl = new IdeaDaoImpl();
+		userDaoImpl.createConnection();
 		ideaDaoImpl.createConnection();
-
 		usersList.setAll(userDaoImpl.getUsersList());
+		List<User> tempListOfUsers = new ArrayList<>();
+		tempListOfUsers = usersList;
+
+		for (int i = 0; i < tempListOfUsers.size(); i++) {
+
+			User user = tempListOfUsers.get(i);
+			int isAdmin = user.getIsAdmin();
+
+			System.out.println(user);
+
+			if (isAdmin == 1 || isAdmin == 2) {
+				usersList.remove(user);
+			}
+		}
+
+		int rowNumber = 1;
 
 		for (User user : usersList) {
 			int amountOfIdeas = ideaDaoImpl.getUserIdeasList(user.getId()).size();
 			user.setAmountOfIdeas(amountOfIdeas);
-		}
 
-		// Bad solution because of change size of usersList during iteration.
-		// ConcurrentModificationException.
-
-		/*
-		 * for (User user : usersList) { if (user.getIsAdmin() == 1) {
-		 * usersList.remove(user); } }
-		 */
-
-		for (int i = 0; i < usersList.size(); i++) {
-			User user = usersList.get(i);
-			if (user.getIsAdmin() == 1) {
-				usersList.remove(user);
+			if (user.getIsAdmin() != 1 && user.getIsAdmin() != 2) {
+				user.setRowNumber(rowNumber++);
 			}
+
 		}
 
 		userDaoImpl.closeConnection();
@@ -186,6 +239,11 @@ public class AdminLayoutController {
 		IdeaDaoImpl ideaDaoImpl = new IdeaDaoImpl();
 		ideaDaoImpl.createConnection();
 		ideasList.setAll(ideaDaoImpl.getAllIdeasList());
+
+		int rowNumber = 1;
+		for (Idea idea : ideasList) {
+			idea.setRowNumber(rowNumber++);
+		}
 		ideaDaoImpl.closeConnection();
 	}
 
@@ -201,13 +259,15 @@ public class AdminLayoutController {
 		delUserButton.setDisable(false);
 	}
 
-	public void enableIdeaButtons() {
+	public void enableIdeaElements() {
 		if (ideasTable.getSelectionModel().getSelectedItems().size() == 1) {
 			editIdeaButton.setDisable(false);
 		} else {
 			editIdeaButton.setDisable(true);
 		}
 
+		changeIdeaStatusButton.setDisable(false);
+		statusChoiceBox.setDisable(false);
 		delIdeaButton.setDisable(false);
 	}
 
@@ -313,7 +373,7 @@ public class AdminLayoutController {
 
 	@FXML
 	public void handleAddUser() {
-		User user = new User("", "", "", "");
+		User user = new User("", "", "", "", "");
 		main.showAddUserDialog(user, false, false);
 
 		usersList.clear();
@@ -326,15 +386,25 @@ public class AdminLayoutController {
 
 	@FXML
 	private void handleAddAdmin() {
-		User user = new User("", "", "", "");
-		user.setIsAdmin(1);
-		main.showAddUserDialog(user, false, true);
 
+		if (this.rights == 2) {
+			User user = new User("", "", "", "", "");
+			user.setIsAdmin(1);
+			main.showAddUserDialog(user, false, true);
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.initOwner(main.getPrimaryStage());
+			alert.setTitle("Brak uprawnień!");
+			alert.setHeaderText("Nie masz praw aby to zrobić!");
+			alert.setContentText("Tylko główny administarator może tego dokonać!");
+
+			alert.showAndWait();
+		}
 		delUserButton.setDisable(true);
 		editUserButton.setDisable(true);
 		showIdeasButton.setDisable(true);
 	}
-	
+
 	@FXML
 	private void handlaEditUser() {
 		User user = usersTable.getSelectionModel().getSelectedItem();
@@ -407,14 +477,70 @@ public class AdminLayoutController {
 
 		ideasList.clear();
 		createIdeasList();
-		
+
 		delIdeaButton.setDisable(true);
 		editIdeaButton.setDisable(true);
-		
+		changeIdeaStatusButton.setDisable(true);
+		statusChoiceBox.setDisable(true);
+
 	}
 
 	@FXML
 	private void handleRemoveIdea() {
+
+		if (rights == 2) {
+			indicator.setVisible(true);
+
+			ObservableList<Idea> selectedItems = ideasTable.getSelectionModel().getSelectedItems();
+
+			Thread thread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+
+					IdeaDaoImpl ideaDaoImpl = new IdeaDaoImpl();
+					ideaDaoImpl.createConnection();
+
+					for (Idea idea : selectedItems) {
+						ideaDaoImpl.removeIdea(idea.getId());
+					}
+
+					ideaDaoImpl.closeConnection();
+
+					Platform.runLater(new Runnable() {
+
+						@Override
+						public void run() {
+
+							indicator.setVisible(false);
+							ideasList.clear();
+							createIdeasList();
+
+							delIdeaButton.setDisable(true);
+							editIdeaButton.setDisable(true);
+							changeIdeaStatusButton.setDisable(true);
+							statusChoiceBox.setDisable(true);
+
+						}
+					});
+
+				}
+			});
+
+			thread.start();
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.initOwner(main.getPrimaryStage());
+			alert.setTitle("Brak uprawnień!");
+			alert.setHeaderText("Nie masz praw aby to zrobić!");
+			alert.setContentText("Tylko główny administarator może tego dokonać!");
+
+			alert.showAndWait();
+		}
+	}
+
+	@FXML
+	private void handleChangeIdeaStatus() {
 		indicator.setVisible(true);
 
 		ObservableList<Idea> selectedItems = ideasTable.getSelectionModel().getSelectedItems();
@@ -428,7 +554,8 @@ public class AdminLayoutController {
 				ideaDaoImpl.createConnection();
 
 				for (Idea idea : selectedItems) {
-					ideaDaoImpl.removeIdea(idea.getId());
+					ideaDaoImpl.changeIdeaStatus(idea.getId(),
+							statusChoiceBox.getSelectionModel().getSelectedItem().toString());
 				}
 
 				ideaDaoImpl.closeConnection();
@@ -441,9 +568,11 @@ public class AdminLayoutController {
 						indicator.setVisible(false);
 						ideasList.clear();
 						createIdeasList();
-						
+
 						delIdeaButton.setDisable(true);
 						editIdeaButton.setDisable(true);
+						changeIdeaStatusButton.setDisable(true);
+						statusChoiceBox.setDisable(true);
 
 					}
 				});
@@ -454,10 +583,11 @@ public class AdminLayoutController {
 		thread.start();
 	}
 
-	@FXML private void handleShowUserIdeas () {
+	@FXML
+	private void handleShowUserIdeas() {
 		main.showIdeasLayout(usersTable.getSelectionModel().getSelectedItem().getId());
 	}
-	
+
 	@FXML
 	private void handleStatistics() {
 		main.showIdeaStatistics();
@@ -466,5 +596,10 @@ public class AdminLayoutController {
 	@FXML
 	private void handleLogout() {
 		main.showLoginLayut();
+	}
+
+	public void setRights(int rights) {
+		this.rights = rights;
+
 	}
 }

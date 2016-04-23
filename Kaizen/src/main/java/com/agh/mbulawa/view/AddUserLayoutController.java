@@ -23,6 +23,8 @@ public class AddUserLayoutController {
 	@FXML
 	private TextField loginField;
 	@FXML
+	private TextField facultyField;
+	@FXML
 	private TextField passField;
 
 	private User user;
@@ -35,6 +37,7 @@ public class AddUserLayoutController {
 		this.firstNameField.setText(user.getFirstName());
 		this.lastNameField.setText(user.getLastName());
 		this.loginField.setText(user.getLogin());
+		this.facultyField.setText(user.getFaculty());
 	}
 
 	public void setUser(User user) {
@@ -63,7 +66,7 @@ public class AddUserLayoutController {
 				&& passField.getText().isEmpty())) {
 
 			User user = new User(firstNameField.getText(), lastNameField.getText(), loginField.getText(),
-					passField.getText());
+					facultyField.getText(), passField.getText());
 			UserDaoImpl userDaoImpl = new UserDaoImpl();
 			userDaoImpl.createConnection();
 			userDaoImpl.createTable();
@@ -75,6 +78,8 @@ public class AddUserLayoutController {
 			if (isEdit) {
 				user.setId(main.getUserId());
 				userDaoImpl.updateUser(user);
+				dialogStage.close();
+
 			} else if (userDaoImpl.getUserIdByLogin(loginField.getText()) != 0) {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.initOwner(dialogStage);
@@ -84,13 +89,9 @@ public class AddUserLayoutController {
 
 				alert.showAndWait();
 			} else {
-
 				userDaoImpl.addUser(user);
-
-				System.out.println("Dodano Użytkownika");
 				dialogStage.close();
 			}
-
 			userDaoImpl.closeConnection();
 
 		} else {
@@ -102,7 +103,6 @@ public class AddUserLayoutController {
 
 			alert.showAndWait();
 		}
-
 	}
 
 	@FXML

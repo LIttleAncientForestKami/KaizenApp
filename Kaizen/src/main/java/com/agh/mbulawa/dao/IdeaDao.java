@@ -14,4 +14,5 @@ public interface IdeaDao {
 	public List<Idea> getUserIdeasList(int userId);
 	public boolean updateIdea(Idea idea);
 	public boolean removeIdea(int id);
+	public boolean changeIdeaStatus(int id, String status);
 }

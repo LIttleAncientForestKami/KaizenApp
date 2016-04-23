@@ -21,6 +21,10 @@ public class IdeasLayoutController {
 	@FXML
 	private TableColumn<Idea, String> ideaNameColumn;
 	@FXML
+	TableColumn<Idea, String> ideaStatusColumn;
+	@FXML
+	TableColumn<Idea, String> ideaAddDateColumn;
+	@FXML
 	private TextArea ideaArea;
 
 	private int userId = 0;
@@ -38,10 +42,18 @@ public class IdeasLayoutController {
 		ideaCategoryColumn.setCellValueFactory(cellData -> cellData.getValue().categoryProperty());
 		ideaNameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 
+		ideaStatusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+		ideaAddDateColumn.setCellValueFactory(cellData -> cellData.getValue().addDateProperty());
+
 		ideasTable.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showIdea(newValue));
 
-		ideaCategoryColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(2));
+		int divider = 4; // amount of column to divide equal
+
+		ideaCategoryColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(divider));
+		ideaNameColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(divider));
+		ideaAddDateColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(divider));
+		ideaStatusColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(divider));
 
 		ideaArea.setEditable(false);
 		ideaArea.setWrapText(true);

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.MainUserLayoutController">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.MainUserLayoutController">
 	<children>
 		<SplitPane dividerPositions="0.4323308270676692" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<items>
@@ -20,8 +20,9 @@
 						</Pane>
 						<TableView fx:id="ideasTable" layoutY="22.0" prefHeight="378.0" prefWidth="248.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
 							<columns>
-								<TableColumn fx:id="ideaCategoryColumn" prefWidth="137.0" text="Kategoria" />
-								<TableColumn fx:id="ideaNameColumn" prefWidth="206.0" resizable="true" text="Nazwa pomysłu" />
+								<TableColumn fx:id="ideaCategoryColumn" prefWidth="100.0" text="Kategoria" />
+								<TableColumn fx:id="ideaNameColumn" prefWidth="120.0" resizable="true" text="Nazwa pomysłu" />
+                        <TableColumn fx:id="ideaStatusColumn" prefWidth="120.0" resizable="true" text="Status pomysłu" />
 							</columns>
 						</TableView>
 					</children>

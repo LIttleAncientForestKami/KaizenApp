@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.NewAddIdeaController">
+   <children>
+      <BorderPane fx:id="thirdBorder" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #1d1d1d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Text fill="#e1ff00" strokeType="OUTSIDE" strokeWidth="0.0" text="PODAJ TREŚĆ POMYSŁU" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="32.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#f2ff00" />
+               </effect>
+               <BorderPane.margin>
+                  <Insets top="20.0" />
+               </BorderPane.margin>
+            </Text>
+         </top>
+         <center>
+            <TextArea fx:id="contentArea" style="-fx-background-color: #1d1d1d;" wrapText="true" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="120.0" right="120.0" top="20.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </center>
+         <bottom>
+            <Button minHeight="50.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleOK" style="-fx-background-color: #1d1d1d;" text="OK" textAlignment="CENTER" textFill="#f6ff00" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Bodoni MT" size="36.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#f6ff00" />
+               </effect>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+            </Button>
+         </bottom></BorderPane>
+      <BorderPane fx:id="secondBorder" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #1d1d1d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <TextField fx:id="nameField" prefHeight="25.0" prefWidth="539.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+               </padding>
+               <BorderPane.margin>
+                  <Insets bottom="50.0" left="100.0" right="100.0" top="50.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font name="Times New Roman Bold" size="18.0" />
+               </font>
+               <effect>
+                  <InnerShadow height="130.71" radius="67.0775" width="139.6" />
+               </effect>
+            </TextField>
+         </center>
+         <bottom>
+            <Button minHeight="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#handleSecondNext" style="-fx-background-color: #1d1d1d;" text="DALEJ" textAlignment="CENTER" textFill="#f6ff00" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="30.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font name="Bodoni MT" size="36.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#f6ff00" />
+               </effect>
+            </Button>
+         </bottom>
+         <top>
+            <Text fill="#a8d319" strokeType="OUTSIDE" strokeWidth="0.0" text="PODAJ NAZWĘ POMYSŁU, KTÓRY CHCESZ DODAĆ." textAlignment="CENTER" wrappingWidth="500.0" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="32.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#f2ff00" />
+               </effect>
+               <BorderPane.margin>
+                  <Insets top="100.0" />
+               </BorderPane.margin>
+            </Text>
+         </top></BorderPane>
+      <BorderPane fx:id="firstBorder" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #1d1d1d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <ComboBox fx:id="categoryCombokBox" prefHeight="150.0" prefWidth="300.0" promptText="KATEGORIA" style="-fx-background-color: #1d1d1d; -fx-font-size: 25px;" BorderPane.alignment="CENTER">
+               <effect>
+                  <DropShadow color="#e5ff00" />
+               </effect>
+               <BorderPane.margin>
+                  <Insets bottom="25.0" top="25.0" />
+               </BorderPane.margin>
+            </ComboBox>
+         </center>
+         <top>
+            <Text fill="#a8d319" strokeType="OUTSIDE" strokeWidth="0.0" text="Z LISTY ROZWIJANEJ PONIŻEJ WYBIERZ KATEGORIĘ, KTÓREJ BĘDZIE DOTYCZYŁ POMYSŁ ." textAlignment="CENTER" wrappingWidth="500.0" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="32.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#f2ff00" />
+               </effect>
+               <BorderPane.margin>
+                  <Insets top="30.0" />
+               </BorderPane.margin>
+            </Text>
+         </top>
+         <bottom>
+            <Button minHeight="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#handleFirstNext" style="-fx-background-color: #1d1d1d;" text="DALEJ" textAlignment="CENTER" textFill="#f6ff00" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Bodoni MT" size="36.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#f6ff00" />
+               </effect>
+               <BorderPane.margin>
+                  <Insets bottom="30.0" />
+               </BorderPane.margin>
+            </Button>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>

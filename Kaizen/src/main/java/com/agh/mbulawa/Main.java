@@ -10,11 +10,13 @@ import com.agh.mbulawa.model.User;
 import com.agh.mbulawa.view.AddIdeaLayoutController;
 import com.agh.mbulawa.view.AddUserLayoutController;
 import com.agh.mbulawa.view.AdminLayoutController;
+import com.agh.mbulawa.view.AllIdeasLayoutController;
 import com.agh.mbulawa.view.AllUsersLayoutController;
 import com.agh.mbulawa.view.IdeaStatisticsController;
 import com.agh.mbulawa.view.IdeasLayoutController;
 import com.agh.mbulawa.view.LoginLayoutController;
 import com.agh.mbulawa.view.MainUserLayoutController;
+import com.agh.mbulawa.view.NewAddIdeaController;
 import com.agh.mbulawa.view.RootLayoutController;
 
 import javafx.application.Application;
@@ -90,33 +92,21 @@ public class Main extends Application {
 				IdeaDaoImpl ideaDaoImpl = new IdeaDaoImpl();
 				ideaDaoImpl.createConnection();
 				ideaDaoImpl.createTable();
+
+				// System.out.println(ideaDaoImpl.getAllIdeasList());
+
 				ideaDaoImpl.closeConnection();
 
 				UserDaoImpl userDaoImpl = new UserDaoImpl();
 				userDaoImpl.createConnection();
 				userDaoImpl.createTable();
 
-				User user = new User("Admin", "Admin", "Admin", "Admin");
+				User user = new User("Main", "Main", "Main", "Main", "Main");
 
-				user.setIsAdmin(1);
+				user.setIsAdmin(2);
 
 				userDaoImpl.addUser(user);
 
-				/*
-				 * User user = new User("NoAdmin", "NoAdmin", "NoAdmin", "123");
-				 * userDaoImpl.addUser(user);
-				 */
-				/*
-				 * for (int i = 0; i < 10; i++) { User user2 = new User(("Imię"
-				 * + i), ("Nazwisko" + i), ("Login" + i), "Hasło");
-				 * System.out.println(user2.getIsAdmin());;
-				 * userDaoImpl.addUser(user2); // userDaoImpl.addUser(new
-				 * User("Kajetan", "Koszyk", // "Kokosz", "123")); }
-				 */
-				/*
-				 * List<User> usersList = userDaoImpl.getUsersList(); for (User
-				 * u : usersList) { System.out.println(u.toString()); }
-				 */
 				userDaoImpl.closeConnection();
 			}
 		};
@@ -225,7 +215,7 @@ public class Main extends Application {
 		}
 	}
 
-	public void showAdminLayout() {
+	public void showAdminLayout(int rights) {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -235,6 +225,7 @@ public class Main extends Application {
 
 			AdminLayoutController controller = loader.getController();
 			controller.setMain(this);
+			controller.setRights(rights);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -257,6 +248,29 @@ public class Main extends Application {
 			IdeasLayoutController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setUserId(userId);
+
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void showAllIdeasLayout() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("view/AllIdeasLayout.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Pomysły Pracowników");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			AllIdeasLayoutController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
 
 			dialogStage.showAndWait();
 
@@ -308,6 +322,35 @@ public class Main extends Application {
 			dialogStage.setScene(scene);
 
 			AddIdeaLayoutController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setIdea(idea);
+			controller.setMain(this);
+			controller.setEdit(isEdit);
+
+			dialogStage.showAndWait();
+
+			return controller.isOkCliked();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean showAddIdeaTripleDialog(Idea idea, boolean isEdit) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("view/NewAddIdeaLayout.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+			this.setMainUserLayout(mainUserLayout);
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Add Idea");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			NewAddIdeaController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setIdea(idea);
 			controller.setMain(this);

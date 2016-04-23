@@ -13,17 +13,22 @@ public class User {
 	private StringProperty firstName;
 	private StringProperty lastName;
 	private StringProperty login;
+	private StringProperty faculty;
 	private StringProperty password;
+	
+	// Used only for show in table purpose.
+	private IntegerProperty rowNumber = new SimpleIntegerProperty(0);
 
 	public User() {
 
 	}
 
-	public User(String firstName, String lastName, String login, String password) {
+	public User(String firstName, String lastName, String login, String faculty, String password) {
 
 		this.firstName = new SimpleStringProperty(firstName);
 		this.lastName = new SimpleStringProperty(lastName);
 		this.login = new SimpleStringProperty(login);
+		this.faculty = new SimpleStringProperty(faculty);
 		this.password = new SimpleStringProperty(password);
 	}
 
@@ -52,6 +57,18 @@ public class User {
 		;
 	}
 
+	public StringProperty facultyProperty() {
+		return faculty;
+	}
+
+	public String getFaculty() {
+		return faculty.get();
+	}
+
+	public void setFaculty(String faculty) {
+		this.faculty.set(faculty);
+	}
+
 	public StringProperty passwordProperty() {
 		return password;
 	}
@@ -62,6 +79,18 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password.set(password);
+	}
+
+	public IntegerProperty rowNumberProperty() {
+		return rowNumber;
+	}
+
+	public int getRowNumber() {
+		return rowNumber.get();
+	}
+	
+	public void setRowNumber(int rowNumber) {
+		this.rowNumber.set(rowNumber);
 	}
 
 	public StringProperty firstNameProperty() {
@@ -103,7 +132,7 @@ public class User {
 	public IntegerProperty isAdminProperty() {
 		return isAdmin;
 	}
-	
+
 	public int getIsAdmin() {
 		return isAdmin.get();
 	}
@@ -114,8 +143,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id.get() + ", firstName=" + firstName.get() + ", lastName=" + lastName.get() + ", login="
-				+ login.get() + ", password=" + password.get() + "]";
+		return "User [id = " + id.get() + ", firstName = " + firstName.get() + ", lastName = " + lastName.get()
+				+ ", login = " + login.get() + ", faculty = " + faculty.get() + ", password=" + password.get() + "]";
 	}
 
 }

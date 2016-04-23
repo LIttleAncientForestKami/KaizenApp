@@ -20,11 +20,14 @@ public class MainUserLayoutController {
 	@FXML
 	private TableColumn<Idea, String> ideaNameColumn;
 	@FXML
+	private TableColumn<Idea, String> ideaStatusColumn;
+	@FXML
 	private TextArea ideaArea;
 	@FXML
 	private Button edit;
-	/*@FXML
-	private Button remove;*/
+	/*
+	 * @FXML private Button remove;
+	 */
 
 	private Main main;
 
@@ -36,15 +39,20 @@ public class MainUserLayoutController {
 	private void initialize() {
 		ideaCategoryColumn.setCellValueFactory(cellData -> cellData.getValue().categoryProperty());
 		ideaNameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+		ideaStatusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
 		edit.disableProperty().set(true);
-		//remove.disableProperty().set(true);
+		// remove.disableProperty().set(true);
 
 		ideasTable.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showIdea(newValue));
 
-		ideaCategoryColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(2));
-		
+		int divider = 3; // amount of column to divide equal
+
+		ideaCategoryColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(divider));
+		ideaNameColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(divider));
+		ideaStatusColumn.prefWidthProperty().bind(ideasTable.widthProperty().divide(divider));
+
 		ideaArea.setEditable(false);
 		ideaArea.setWrapText(true);
 	}
@@ -59,7 +67,7 @@ public class MainUserLayoutController {
 		if (idea != null)
 			ideaArea.setText(idea.getContent());
 
-		if (edit.isDisabled() /*&& remove.isDisabled()*/) {
+		if (edit.isDisabled() /* && remove.isDisabled() */) {
 			new Thread() {
 				public void run() {
 
@@ -68,7 +76,7 @@ public class MainUserLayoutController {
 						@Override
 						public void run() {
 							edit.setDisable(false);
-							//remove.setDisable(false);
+							// remove.setDisable(false);
 						}
 					});
 				}
@@ -79,33 +87,38 @@ public class MainUserLayoutController {
 	public void clearArea() {
 		ideaArea.setText("");
 		edit.setDisable(false);
-		//remove.setDisable(false);
+		// remove.setDisable(false);
 	}
 
 	@FXML
 	public void handleAdd() {
 		Idea idea = new Idea("", "", "");
-		boolean isOkCliked = main.showAddIdeaDialog(idea, false);
+		boolean isOkCliked = main.showAddIdeaTripleDialog(idea, false);
 		if (isOkCliked) {
 			main.refreshTable();
 			edit.setDisable(true);
-			//remove.setDisable(true);
+			// remove.setDisable(true);
 		}
 	}
 
 	@FXML
 	private void handleEdit() {
-		/*String category = ideasTable.getSelectionModel().getSelectedItem().getCategory();
-		String name = ideasTable.getSelectionModel().getSelectedItem().getName();
-		String content = ideasTable.getSelectionModel().getSelectedItem().getContent();
-		Idea idea = new Idea(category, name, content);*/
+		/*
+		 * String category =
+		 * ideasTable.getSelectionModel().getSelectedItem().getCategory();
+		 * String name =
+		 * ideasTable.getSelectionModel().getSelectedItem().getName(); String
+		 * content =
+		 * ideasTable.getSelectionModel().getSelectedItem().getContent(); Idea
+		 * idea = new Idea(category, name, content);
+		 */
 		Idea idea = ideasTable.getSelectionModel().getSelectedItem();
 		boolean isOkCliked = main.showAddIdeaDialog(idea, true);
 		if (isOkCliked) {
 			clearArea();
 			main.refreshTable();
 			edit.setDisable(true);
-			//remove.setDisable(true);
+			// remove.setDisable(true);
 		}
 
 	}
@@ -122,7 +135,7 @@ public class MainUserLayoutController {
 		clearArea();
 		main.refreshTable();
 		edit.setDisable(true);
-		//remove.setDisable(true);
+		// remove.setDisable(true);
 
 	}
 

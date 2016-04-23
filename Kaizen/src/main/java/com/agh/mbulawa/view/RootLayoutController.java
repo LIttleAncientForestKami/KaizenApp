@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 
 public class RootLayoutController {
 
-	@SuppressWarnings("unused")
 	private Main main;
 
 	public void setMain(Main main) {
@@ -63,6 +62,11 @@ public class RootLayoutController {
 			e.printStackTrace();
 		}
 	}*/
+	
+	@FXML
+	private void handleShowIdeas() {
+		main.showAllIdeasLayout();
+	}
 	
 	@FXML
 	private void handleClose() {
