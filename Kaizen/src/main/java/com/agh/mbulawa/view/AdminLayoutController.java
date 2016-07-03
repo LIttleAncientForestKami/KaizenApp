@@ -49,6 +49,8 @@ public class AdminLayoutController {
 	@FXML
 	private TableColumn<User, String> loginColumn;
 	@FXML
+	private TableColumn<User, String> facultyColumn;
+	@FXML
 	private TableColumn<User, Integer> amountOfIdeasColumn;
 
 	// Ideas table
@@ -153,10 +155,11 @@ public class AdminLayoutController {
 						firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
 						lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
 						loginColumn.setCellValueFactory(cellData -> cellData.getValue().loginProperty());
+						facultyColumn.setCellValueFactory(cellData -> cellData.getValue().facultyProperty());
 						amountOfIdeasColumn.setCellValueFactory(
 								cellData -> cellData.getValue().amountOfIdeasProperty().asObject());
 
-						int userColumntDivider = 4;
+						int userColumntDivider = 5;
 
 						userRowNumberColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(30));
 						firstNameColumn.prefWidthProperty().bind((usersTable.widthProperty()
@@ -164,6 +167,8 @@ public class AdminLayoutController {
 						lastNameColumn.prefWidthProperty().bind((usersTable.widthProperty()
 								.subtract(userRowNumberColumn.widthProperty().get()).divide(userColumntDivider)));
 						loginColumn.prefWidthProperty().bind((usersTable.widthProperty()
+								.subtract(userRowNumberColumn.widthProperty().get()).divide(userColumntDivider)));
+						facultyColumn.prefWidthProperty().bind((usersTable.widthProperty()
 								.subtract(userRowNumberColumn.widthProperty().get()).divide(userColumntDivider)));
 						amountOfIdeasColumn.prefWidthProperty().bind((usersTable.widthProperty()
 								.subtract(userRowNumberColumn.widthProperty().get()).divide(userColumntDivider)));

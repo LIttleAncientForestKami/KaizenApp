@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.AllIdeasLayoutController">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.AllIdeasLayoutController">
 	<children>
 		<SplitPane dividerPositions="0.4323308270676692" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<items>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="283.0" styleClass="background" SplitPane.resizableWithParent="false">
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="283.0" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204.0,255.0,255.0) 0.0, rgb(128.0,153.0,255.0) 100.0 );" styleClass="background" SplitPane.resizableWithParent="false">
 					<children>
 						<Pane styleClass="background">
 							<children>
@@ -29,7 +29,7 @@
 				</AnchorPane>
 				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" styleClass="background">
 					<children>
-						<BorderPane layoutX="34.0" prefHeight="399.0" prefWidth="513.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+						<BorderPane layoutX="34.0" prefHeight="399.0" prefWidth="513.0" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204.0,255.0,255.0) 0.0, rgb(128.0,153.0,255.0) 100.0 );" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 							<center>
 								<TextArea fx:id="ideaArea" accessibleRole="TEXT" prefHeight="200.0" prefWidth="200.0" styleClass="background" BorderPane.alignment="CENTER">
 									<BorderPane.margin>
@@ -52,7 +52,7 @@
 								</VBox>
 							</right>
                      <bottom>
-                        <Button mnemonicParsing="false" onAction="#handleExit" text="Zamknij" BorderPane.alignment="CENTER" />
+                        <Button mnemonicParsing="false" onAction="#handleExit" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(179,230,230) 0.0, rgb(0,26,128) 100.0 );" text="Zamknij" BorderPane.alignment="CENTER" />
                      </bottom>
 						</BorderPane>
 					</children>

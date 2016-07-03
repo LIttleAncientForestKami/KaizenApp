@@ -7,6 +7,8 @@ import com.agh.mbulawa.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -102,6 +104,16 @@ public class AddUserLayoutController {
 			alert.setContentText("Prosze uzupełnić wszystkie pola aby kontynuować!");
 
 			alert.showAndWait();
+		}
+	}
+
+	@FXML
+	private void handleEnterPressed(KeyEvent event) {
+
+		if (event.getCode().equals(KeyCode.ENTER)) {
+			handleOk();
+		} else if (event.getCode().equals(KeyCode.ESCAPE)) {
+			dialogStage.close();
 		}
 	}
 

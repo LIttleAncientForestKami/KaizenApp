@@ -71,9 +71,9 @@ public class LoginLayoutController {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(main.getPrimaryStage());
-			alert.setTitle("Login Fail");
-			alert.setHeaderText("Wrong Login and/or password!");
-			alert.setContentText("Please check your pass and login!");
+			alert.setTitle("Logowanie nie powiodło się!");
+			alert.setHeaderText("Zły login i/lub hasło!");
+			alert.setContentText("Proszę sprawdzić swoje dane logowania!");
 
 			alert.showAndWait();
 		}
@@ -89,17 +89,6 @@ public class LoginLayoutController {
 		}
 
 	}
-
-	// Methods used in previous version of program.
-
-	/*
-	 * @FXML private void handleAdd() { User user = new User("", "", "", "");
-	 * main.showAddUserDialog(user, false, false); }
-	 */
-
-	/*
-	 * @FXML private void handleShowAll() { main.showAllUsersList(); }
-	 */
 
 	@FXML
 	private void handleExit() {

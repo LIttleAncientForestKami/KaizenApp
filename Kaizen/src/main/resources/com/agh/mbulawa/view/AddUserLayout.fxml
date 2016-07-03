@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.AddUserLayoutController">
+<AnchorPane onKeyPressed="#handleEnterPressed" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204,255,255) 0.0, rgb(128,153,255) 100.0 );" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.AddUserLayoutController">
 	<children>
 		<GridPane layoutX="188.0" layoutY="126.0" prefHeight="305.0" prefWidth="600.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
 			<columnConstraints>
@@ -34,8 +34,8 @@
 		</GridPane>
 		<ButtonBar layoutX="380.0" layoutY="346.0" prefHeight="40.0" prefWidth="200.0">
 			<buttons>
-				<Button mnemonicParsing="false" onAction="#handleOk" text="OK" />
-				<Button mnemonicParsing="false" onAction="#handleCancel" text="Anuluj" />
+				<Button mnemonicParsing="false" onAction="#handleOk" onKeyPressed="#handleEnterPressed" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(179,230,230) 0.0, rgb(0,26,128) 100.0 )( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204,255,255) 0.0, rgb(128,153,255) 100.0 );" text="OK" />
+				<Button mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(179,230,230) 0.0, rgb(0,26,128) 100.0 )( focus-angle 0.0deg, focus-distance 0.0%, center 56.00000000000001% 70.0%, radius 100.0%, rgb(179,230,230) 0.0, rgb(179,230,230) 1.0, rgb(51,77,179) 100.0 );" text="Anuluj" />
 			</buttons>
 		</ButtonBar>
 	</children>

@@ -5,6 +5,8 @@ D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\view\LoginLa
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\view\IdeasLayoutController.java
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\view\AdminLayoutController.java
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\dao\UserDaoImpl.java
+D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\view\AllIdeasLayoutController.java
+D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\view\NewAddIdeaController.java
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\dao\IdeaDao.java
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\view\AllUsersLayoutController.java
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\view\IdeaStatisticsController.java
@@ -14,3 +16,4 @@ D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\dao\UserDao.
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\dao\IdeaDaoImpl.java
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\Main.java
 D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\view\MainUserLayoutController.java
+D:\Repozytoria\JavaFXKaizenApp\Kaizen\src\main\java\com\agh\mbulawa\model\MainAdmin.java

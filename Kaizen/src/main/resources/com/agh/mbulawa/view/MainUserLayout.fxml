@@ -7,18 +7,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.MainUserLayoutController">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: #189DC9;" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.MainUserLayoutController">
 	<children>
-		<SplitPane dividerPositions="0.4323308270676692" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<SplitPane dividerPositions="0.4323308270676692" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #189DC9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<items>
 				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="283.0" styleClass="background" SplitPane.resizableWithParent="false">
 					<children>
-						<Pane styleClass="background">
+						<Pane style="-fx-background-color: #189DC9;" styleClass="background">
 							<children>
-								<Label alignment="CENTER" text="Twoje dotychczasowe pomysły" textAlignment="CENTER" wrapText="true" />
+								<Label alignment="CENTER" text="Twoje dotychczasowe pomysły" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets left="60.0" />
+                           </padding></Label>
 							</children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
 						</Pane>
-						<TableView fx:id="ideasTable" layoutY="22.0" prefHeight="378.0" prefWidth="248.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+						<TableView fx:id="ideasTable" layoutY="17.0" prefHeight="378.0" prefWidth="248.0" style="-fx-background-color: #189DC9;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="17.0">
 							<columns>
 								<TableColumn fx:id="ideaCategoryColumn" prefWidth="100.0" text="Kategoria" />
 								<TableColumn fx:id="ideaNameColumn" prefWidth="120.0" resizable="true" text="Nazwa pomysłu" />
@@ -31,7 +40,7 @@
 					<children>
 						<BorderPane layoutX="34.0" prefHeight="399.0" prefWidth="513.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 							<center>
-								<TextArea fx:id="ideaArea" accessibleRole="TEXT" prefHeight="200.0" prefWidth="200.0" styleClass="background" BorderPane.alignment="CENTER">
+								<TextArea fx:id="ideaArea" accessibleRole="TEXT" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #189DC9;" styleClass="background" BorderPane.alignment="CENTER">
 									<BorderPane.margin>
 										<Insets bottom="5.0" />
 									</BorderPane.margin>
