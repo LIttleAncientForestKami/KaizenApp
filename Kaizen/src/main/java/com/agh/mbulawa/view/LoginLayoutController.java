@@ -64,9 +64,9 @@ public class LoginLayoutController {
 			if (isAdmin == 0) {
 				main.showMainUserLayout();
 			} else if (isAdmin == 1) {
-				main.showAdminLayout(1, passField.getText());
+				main.showAdminLayout(1, loginField.getText());
 			} else if (isAdmin == 2) {
-				main.showAdminLayout(2, passField.getText());
+				main.showAdminLayout(2, loginField.getText());
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);

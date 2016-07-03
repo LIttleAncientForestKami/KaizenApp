@@ -413,6 +413,8 @@ public class AdminLayoutController {
 			User user = new User("", "", "", "", "");
 			user.setIsAdmin(1);
 			main.showAddUserDialog(user, false, true);
+			usersList.clear();
+			createUsersList();
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(main.getPrimaryStage());
@@ -431,7 +433,10 @@ public class AdminLayoutController {
 	private void handlaEditUser() {
 		User user = usersTable.getSelectionModel().getSelectedItem();
 		main.setUserId(user.getId());
-		main.showAddUserDialog(user, true, false);
+		if (rights != 0) {
+			main.showAddUserDialog(user, true, true);
+		} else
+			main.showAddUserDialog(user, true, false);
 		usersList.clear();
 		createUsersList();
 
