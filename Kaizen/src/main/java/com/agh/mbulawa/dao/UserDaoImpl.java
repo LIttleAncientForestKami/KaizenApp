@@ -1,5 +1,6 @@
 package com.agh.mbulawa.dao;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,7 +22,20 @@ public class UserDaoImpl implements UserDao {
 
 	public UserDaoImpl() {
 		try {
-			Class.forName(UserDaoImpl.DB_DRIVER);
+			File file = new File("kaizen.db");
+
+			if (file.exists()) {
+				System.out.print("Wszystko ustawione prawidłowo");
+			} else {
+				Class.forName(UserDaoImpl.DB_DRIVER);
+				createConnection();
+				createTable();
+				User user = new User("Main", "Main", "Main", "Main", "Main");
+				user.setIsAdmin(2);
+				addUser(user);
+				closeConnection();
+			}
+
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

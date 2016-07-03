@@ -73,6 +73,8 @@ public class AdminLayoutController {
 
 	// Buttons
 	@FXML
+	private Button changePasswordButton;
+	@FXML
 	private Button editUserButton;
 	@FXML
 	private Button delUserButton;
@@ -97,6 +99,7 @@ public class AdminLayoutController {
 
 	private ObservableList<String> statusList = FXCollections.observableArrayList();
 	private int rights;
+	private String login;
 
 	public void setMain(Main main) {
 		this.main = main;
@@ -105,10 +108,22 @@ public class AdminLayoutController {
 	public void setDialogStage(Stage dialogStage) {
 	}
 
+	public void setRights(int rights) {
+		this.rights = rights;
+		if (rights == 2)
+			changePasswordButton.setVisible(true);
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+
+	}
+
 	@FXML
 	private void initialize() {
 
 		indicator.setVisible(false);
+		changePasswordButton.setVisible(false);
 
 		statusList.add("Dodany");
 		statusList.add("Zaakceptowany");
@@ -208,7 +223,9 @@ public class AdminLayoutController {
 		IdeaDaoImpl ideaDaoImpl = new IdeaDaoImpl();
 		userDaoImpl.createConnection();
 		ideaDaoImpl.createConnection();
+
 		usersList.setAll(userDaoImpl.getUsersList());
+
 		List<User> tempListOfUsers = new ArrayList<>();
 		tempListOfUsers = usersList;
 
@@ -219,7 +236,7 @@ public class AdminLayoutController {
 
 			System.out.println(user);
 
-			if (isAdmin == 1 || isAdmin == 2) {
+			if (isAdmin == 2) {
 				usersList.remove(user);
 			}
 		}
@@ -230,7 +247,7 @@ public class AdminLayoutController {
 			int amountOfIdeas = ideaDaoImpl.getUserIdeasList(user.getId()).size();
 			user.setAmountOfIdeas(amountOfIdeas);
 
-			if (user.getIsAdmin() != 1 && user.getIsAdmin() != 2) {
+			if (user.getIsAdmin() != 2) {
 				user.setRowNumber(rowNumber++);
 			}
 
@@ -603,8 +620,9 @@ public class AdminLayoutController {
 		main.showLoginLayut();
 	}
 
-	public void setRights(int rights) {
-		this.rights = rights;
-
+	@FXML
+	private void handleChangePassword() {
+		main.showChangePassLayout(login);
 	}
+
 }

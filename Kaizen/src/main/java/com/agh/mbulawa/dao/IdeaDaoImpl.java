@@ -23,6 +23,9 @@ public class IdeaDaoImpl implements IdeaDao {
 	public IdeaDaoImpl() {
 		try {
 			Class.forName(IdeaDaoImpl.DB_DRIVER);
+			createConnection();
+			createTable();
+			closeConnection();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

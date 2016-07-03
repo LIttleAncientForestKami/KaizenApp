@@ -6,16 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0"
-	xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.agh.mbulawa.view.AddIdeaLayoutController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.agh.mbulawa.view.AddIdeaLayoutController">
 	<children>
-		<BorderPane prefHeight="400.0" prefWidth="600.0"
-			AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204.0,255.0,255.0) 0.0, rgb(128.0,153.0,255.0) 100.0 );" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<center>
-				<TextArea fx:id="contentArea" prefHeight="200.0" prefWidth="200.0"
-					BorderPane.alignment="TOP_CENTER" />
+				<TextArea fx:id="contentArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="TOP_CENTER" />
 			</center>
 			<left>
 				<VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
@@ -25,7 +20,7 @@
 								<Font size="20.0" />
 							</font>
 						</Label>
-						<ComboBox fx:id="categoryCombokBox" prefWidth="150.0" />
+						<ComboBox fx:id="categoryCombokBox" prefWidth="150.0" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(179,230,230) 0.0, rgb(0,26,128) 100.0 )radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(179,230,230) 0.0, rgb(0,26,128) 100.0 );" />
 						<Label text="Nazwa">
 							<font>
 								<Font size="20.0" />
@@ -36,26 +31,22 @@
 				</VBox>
 			</left>
 			<top>
-				<Label text="Dodaj Pomysł. Bądź Kreatywny!"
-					BorderPane.alignment="CENTER">
+				<Label text="Dodaj Pomysł. Bądź Kreatywny!" BorderPane.alignment="CENTER">
 					<font>
 						<Font size="31.0" />
 					</font>
 				</Label>
 			</top>
 			<bottom>
-				<Label text="System Kazizen - każdy może coś od siebie dać!"
-					BorderPane.alignment="CENTER" />
+				<Label text="System Kazizen - każdy może coś od siebie dać!" BorderPane.alignment="CENTER" />
 			</bottom>
 			<right>
 				<VBox alignment="BOTTOM_CENTER">
 					<children>
 						<ButtonBar prefHeight="40.0" prefWidth="154.0">
 							<buttons>
-								<Button mnemonicParsing="false" onAction="#handleOK"
-									text="OK" />
-								<Button mnemonicParsing="false" onAction="#handleExit"
-									text="Anuluj" />
+								<Button mnemonicParsing="false" onAction="#handleOK" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(179,230,230) 0.0, rgb(0,26,128) 100.0 );" text="OK" />
+								<Button mnemonicParsing="false" onAction="#handleExit" style="-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(179,230,230) 0.0, rgb(0,26,128) 100.0 );" text="Anuluj" />
 							</buttons>
 						</ButtonBar>
 					</children>

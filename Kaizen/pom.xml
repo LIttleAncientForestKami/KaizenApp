@@ -22,8 +22,16 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>8.2.0</version>
 				<configuration>
-					<vendor>AGH</vendor>
 					<mainClass>com.agh.mbulawa.Main</mainClass>
+					<verbose>true</verbose>
+					<jfxMainAppJarName>KaizenApp.jar</jfxMainAppJarName>
+					<vendor>agh</vendor>
+					<needShortcut>true</needShortcut>
+					<appName>KaizenApp</appName>
+					<bundleArguments>
+						<jnlp.includeDT>true</jnlp.includeDT>
+						<jnlp.outfile>KaizenProject</jnlp.outfile>
+					</bundleArguments>
 				</configuration>
 			</plugin>
 		</plugins>

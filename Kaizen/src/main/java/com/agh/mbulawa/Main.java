@@ -12,6 +12,7 @@ import com.agh.mbulawa.view.AddUserLayoutController;
 import com.agh.mbulawa.view.AdminLayoutController;
 import com.agh.mbulawa.view.AllIdeasLayoutController;
 import com.agh.mbulawa.view.AllUsersLayoutController;
+import com.agh.mbulawa.view.ChangePasswordLayoutController;
 import com.agh.mbulawa.view.IdeaStatisticsController;
 import com.agh.mbulawa.view.IdeasLayoutController;
 import com.agh.mbulawa.view.LoginLayoutController;
@@ -215,7 +216,7 @@ public class Main extends Application {
 		}
 	}
 
-	public void showAdminLayout(int rights) {
+	public void showAdminLayout(int rights, String login) {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -226,6 +227,7 @@ public class Main extends Application {
 			AdminLayoutController controller = loader.getController();
 			controller.setMain(this);
 			controller.setRights(rights);
+			controller.setLogin(login);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -287,7 +289,7 @@ public class Main extends Application {
 			this.setMainUserLayout(mainUserLayout);
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Edit Person");
+			dialogStage.setTitle("Edycja/Dodawanie Osoby");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
@@ -414,6 +416,33 @@ public class Main extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void showChangePassLayout(String login) {
+
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("view/ChangePasswordLayout.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+			this.setMainUserLayout(mainUserLayout);
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Zmiana Hasła");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			ChangePasswordLayoutController controller = loader.getController();
+			controller.setMain(this);
+			controller.setDialogStage(dialogStage);
+			controller.setLogin(login);
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	// The main method.
