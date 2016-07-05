@@ -48,10 +48,12 @@ public class AddIdeaLayoutController {
 	public void setMain(Main main) {
 		this.main = main;
 
-		if (this.idea.getCategory() != null)
-			categoryCombokBox.setValue((this.idea.getCategory()));
-		nameField.setText(this.idea.getName());
-		contentArea.setText(this.idea.getContent());
+		if (isEdit) {
+			if (this.idea.getCategory() != null)
+				categoryCombokBox.setValue((this.idea.getCategory()));
+			nameField.setText(this.idea.getName());
+			contentArea.setText(this.idea.getContent());
+		}
 	}
 
 	public boolean isOkCliked() {
@@ -95,8 +97,6 @@ public class AddIdeaLayoutController {
 				&& (nameField.getText() != null && !nameField.getText().isEmpty())
 				&& (contentArea != null && !contentArea.getText().isEmpty())) {
 
-			System.out.println(categoryCombokBox.getSelectionModel().getSelectedItem());
-
 			String category = categoryCombokBox.getSelectionModel().getSelectedItem();
 			String name = nameField.getText();
 			String content = contentArea.getText();
@@ -104,10 +104,9 @@ public class AddIdeaLayoutController {
 			this.idea.setCategory(category);
 			this.idea.setName(name);
 			this.idea.setContent(content);
-			
+
 			if (isEdit) {
-					System.out.println(name);
-				//idea.setId(ideaDaoImpl.getIdeaIdByName(name));
+				// idea.setId(ideaDaoImpl.getIdeaIdByName(name));
 				idea.setUserId(main.getUserId());
 				ideaDaoImpl.updateIdea(idea);
 

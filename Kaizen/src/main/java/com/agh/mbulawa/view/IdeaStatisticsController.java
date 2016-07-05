@@ -15,8 +15,6 @@ import com.agh.mbulawa.model.Idea;
 import com.agh.mbulawa.model.User;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -35,9 +33,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -212,7 +207,7 @@ public class IdeaStatisticsController {
 				ideaBar.layout();
 				ideaBar.getData().add(series);
 				for (Node n : ideaBar.lookupAll(".default-color0.chart-bar")) {
-					n.setStyle("-fx-bar-fill: rgb(142,128,230);");
+					n.setStyle("-fx-bar-fill: rgb(142,228,230);");
 				}
 				ideaBar.setAnimated(false);
 			}

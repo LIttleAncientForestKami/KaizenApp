@@ -483,6 +483,8 @@ public class AdminLayoutController {
 						indicator.setVisible(false);
 						usersList.clear();
 						createUsersList();
+						ideasList.clear();
+						createIdeasList();
 
 						delUserButton.setDisable(true);
 						editUserButton.setDisable(true);
@@ -497,6 +499,20 @@ public class AdminLayoutController {
 
 	}
 
+	@FXML
+	private void handleAddIdea() {
+		Idea idea = new Idea("", "", "");
+		main.showAddIdeaDialog(idea, false);
+
+		ideasList.clear();
+		createIdeasList();
+
+		delIdeaButton.setDisable(true);
+		editIdeaButton.setDisable(true);
+		changeIdeaStatusButton.setDisable(true);
+		statusChoiceBox.setDisable(true);
+	}
+	
 	@FXML
 	private void handleEditIdea() {
 		Idea idea = ideasTable.getSelectionModel().getSelectedItem();

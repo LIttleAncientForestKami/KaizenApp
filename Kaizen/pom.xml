@@ -25,7 +25,7 @@
 					<mainClass>com.agh.mbulawa.Main</mainClass>
 					<verbose>true</verbose>
 					<jfxMainAppJarName>KaizenApp.jar</jfxMainAppJarName>
-					<vendor>agh</vendor>
+					<vendor>M.Bulawa</vendor>
 					<needShortcut>true</needShortcut>
 					<appName>KaizenApp</appName>
 					<bundleArguments>

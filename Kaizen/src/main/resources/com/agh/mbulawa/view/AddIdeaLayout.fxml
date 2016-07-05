@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -31,10 +32,13 @@
 				</VBox>
 			</left>
 			<top>
-				<Label text="Dodaj Pomysł. Bądź Kreatywny!" BorderPane.alignment="CENTER">
+				<Label text=" Bądź Kreatywny!" BorderPane.alignment="CENTER">
 					<font>
 						<Font size="31.0" />
 					</font>
+               <BorderPane.margin>
+                  <Insets right="30.0" />
+               </BorderPane.margin>
 				</Label>
 			</top>
 			<bottom>
