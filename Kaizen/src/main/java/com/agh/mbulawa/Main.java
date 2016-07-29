@@ -29,6 +29,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main extends Application {
 
@@ -39,6 +41,7 @@ public class Main extends Application {
 	private AnchorPane mainUserLayout;
 
 	ObservableList<Idea> ideasTable = FXCollections.observableArrayList();
+	static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 	// Getters and Setters
 	public int getUserId() {
@@ -90,11 +93,9 @@ public class Main extends Application {
 
 			@Override
 			public void run() {
-				IdeaDaoImpl ideaDaoImpl = new IdeaDaoImpl();
+                IdeaDaoImpl ideaDaoImpl = new IdeaDaoImpl();
 				ideaDaoImpl.createConnection();
 				ideaDaoImpl.createTable();
-
-				// System.out.println(ideaDaoImpl.getAllIdeasList());
 
 				ideaDaoImpl.closeConnection();
 
@@ -120,7 +121,7 @@ public class Main extends Application {
 
 				IdeaDaoImpl ideaDaoImpl = new IdeaDaoImpl();
 				ideaDaoImpl.createConnection();
-				ideaDaoImpl.createTable();
+                ideaDaoImpl.createTable();
 
 				ideaDaoImpl.addIdea(new Idea("Porządki", "Porządek na biurku",
 						"Posegregowanie wszystkich przedmiotów znajdujących się w przestrzeni biurka"), 2);
@@ -131,15 +132,12 @@ public class Main extends Application {
 
 				List<Idea> ideasList = ideaDaoImpl.getAllIdeasList();
 				for (Idea i : ideasList) {
-					System.out.println(i.toString());
+					logger.info(i.toString());
 				}
 
 				ideaDaoImpl.closeConnection();
 			}
 		};
-
-		// thread.start();
-		// thread2.start();
 
 	}
 
@@ -445,9 +443,7 @@ public class Main extends Application {
 
 	}
 
-	// The main method.
 	public static void main(String[] args) {
 		launch(args);
-
 	}
 }

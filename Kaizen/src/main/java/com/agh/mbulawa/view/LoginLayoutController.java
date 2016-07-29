@@ -24,9 +24,7 @@ public class LoginLayoutController {
 	private boolean isValid;
 	private int isAdmin;
 
-	public LoginLayoutController() {
-
-	}
+	public LoginLayoutController() {}
 
 	public void setMain(Main main) {
 		this.main = main;

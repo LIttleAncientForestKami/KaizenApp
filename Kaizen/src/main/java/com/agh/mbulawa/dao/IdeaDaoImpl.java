@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.agh.mbulawa.model.Idea;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IdeaDaoImpl implements IdeaDao {
 
@@ -19,6 +21,8 @@ public class IdeaDaoImpl implements IdeaDao {
 
 	private Connection connection;
 	private Statement statement;
+
+    static final Logger logger = LoggerFactory.getLogger(IdeaDaoImpl.class);
 
 	public IdeaDaoImpl() {
 		try {
@@ -33,32 +37,27 @@ public class IdeaDaoImpl implements IdeaDao {
 	}
 
 	public void createConnection() {
-
-		System.out.println("Nawiązywanie połączenia z bazą...");
+        logger.trace("Nawiązywanie połączenia z bazą...");
 
 		try {
 			connection = DriverManager.getConnection(DB_URL);
 			statement = connection.createStatement();
-			System.out.println("Pomyślnie połączono z bazą.");
+            logger.trace("Pomyślnie połączono z bazą.");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Nie udało się nawiązać połaczenia z bazą.");
+            logger.error("Nie udało się nawiązać połączenia z bazą: {}.", e.getCause(), e);
 		}
 	}
 
 	public void closeConnection() {
-
-		System.out.println("Zamykanie połączenia z bazą...");
+        logger.trace("Zamykanie połączenia z bazą...");
 
 		try {
 			statement.close();
-			// connection.commit();
 			connection.close();
 
-			System.out.println("Poprawnie zakończono połączenie z bazą.");
+            logger.trace("Poprawnie zakończono połączenie z bazą.");
 		} catch (SQLException e) {
-			System.out.println("Wystąpił błąd podczas kończenia połączenia.");
-			e.printStackTrace();
+            logger.error("Wystąpił błąd podczas kończenia połączenia{}.", e.getCause(), e);
 		}
 
 	}
@@ -68,19 +67,15 @@ public class IdeaDaoImpl implements IdeaDao {
 		String createIdeasTableQuery = "CREATE TABLE IF NOT EXISTS Pomysły (id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ " Kategoria varchar(255), Nazwa varchar(255), Treść varchar(255), id_Pracownika int, data_dodania datetime default current_datetime, data_edycji datetime default current_datetime, status varchar(255))";
 		try {
-			// createConnection();
-			boolean execute = statement.execute(createIdeasTableQuery);
-			if (execute) {
-				System.out.println("Nie znaleziono tabeli Pomysłów...");
-				System.out.println("Tworzenie nowej tabeli.");
-				System.out.println("Pomyślnie utworzono table pomysłów w bazie");
+			if (statement.execute(createIdeasTableQuery)) {
+                logger.info("Nie znaleziono tabeli Pomysłów...");
+                logger.info("Tworzenie nowej tabeli.");
+                logger.info("Pomyślnie utworzono table pomysłów w bazie");
 			} else {
-				System.out.println("Pomyślnie połączono z tabelą pomysłów w bazie");
+				logger.info("Pomyślnie połączono z tabelą pomysłów w bazie");
 			}
-			// closeConnection();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Nie udało się odnaleźć lub utworzyć tabeli w bazie.");
+            logger.error("Nie udało się odnaleźć lub utworzyć tabeli w bazie: {}.", e.getCause(), e);
 		} finally {
 
 		}
@@ -111,8 +106,7 @@ public class IdeaDaoImpl implements IdeaDao {
 			System.out.println("Pomyślnie dodano pomysł do bazy danych.");
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Nie udało się dodać pomysłu do bazy.");
+			logger.error("Nie udało się dodać pomysłu do bazy: {}.", e.getCause(), e);
 			return false;
 		}
 
@@ -123,11 +117,9 @@ public class IdeaDaoImpl implements IdeaDao {
 
 		String getIdeaQuery = "SELECT * FROM Pomysły WHERE id = '" + id + "';";
 
-		System.out.println("Pobieranie treści pomysłu z bazy...");
+		logger.trace("Pobieranie treści pomysłu z bazy...");
 
 		try {
-			// createConnection();
-
 			ResultSet result = statement.executeQuery(getIdeaQuery);
 			result.next();
 
@@ -147,7 +139,6 @@ public class IdeaDaoImpl implements IdeaDao {
 			idea.setEditDate(editDate);
 			idea.setStatus(status);
 			result.close();
-			// closeConnection();
 
 			System.out.println("Pomyślnie pobrano treść pomysłu o id: " + id + "z bazy.");
 

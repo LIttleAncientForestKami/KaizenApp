@@ -11,11 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.agh.mbulawa.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserDaoImpl implements UserDao {
 
 	private static final String DB_DRIVER = "org.sqlite.JDBC";
 	private static final String DB_URL = "jdbc:sqlite:kaizen.db";
+
+    static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
 	private Connection connection;
 	private Statement statement;
@@ -25,7 +29,7 @@ public class UserDaoImpl implements UserDao {
 			File file = new File("kaizen.db");
 
 			if (file.exists()) {
-				System.out.print("Wszystko ustawione prawidłowo");
+				logger.info("Wszystko ustawione prawidłowo");
 			} else {
 				Class.forName(UserDaoImpl.DB_DRIVER);
 				createConnection();
@@ -43,33 +47,28 @@ public class UserDaoImpl implements UserDao {
 
 	public void createConnection() {
 
-		System.out.println("Nawiązywanie połączenia z bazą...");
+		logger.trace("Nawiązywanie połączenia z bazą...");
 
 		try {
 			connection = DriverManager.getConnection(DB_URL);
 			statement = connection.createStatement();
-			System.out.println("Pomyślnie połączono z bazą.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Nie udało się nawiązać połaczenia z bazą.");
-		}
+			logger.trace("Pomyślnie połączono z bazą.");
+        } catch (SQLException e) {
+            logger.error("Nie udało się nawiązać połaczenia z bazą: {}.", e.getCause(), e);
+        }
 	}
 
 	public void closeConnection() {
-
-		System.out.println("Zamykanie połączenia z bazą...");
+		logger.trace("Zamykanie połączenia z bazą...");
 
 		try {
 			statement.close();
-			// connection.commit();
 			connection.close();
 
-			System.out.println("Poprawnie zakończono połączenie z bazą.");
-		} catch (SQLException e) {
-			System.out.println("Wystąpił błąd podczas kończenia połączenia.");
-			e.printStackTrace();
-		}
-
+            logger.trace("Poprawnie zakończono połączenie z bazą.");
+        } catch (SQLException e) {
+            logger.error("Wystąpił błąd podczas kończenia połączenia: {}.", e.getCause(), e);
+        }
 	}
 
 	public void createTable() {
@@ -77,18 +76,15 @@ public class UserDaoImpl implements UserDao {
 				+ " Imię varchar(255), Nazwisko varchar(255), Login varchar(255), Wydział varchar(255), Hasło varchar(255), Administrator INTEGER)";
 		try {
 
-			boolean execute = statement.execute(createUserTableQuery);
-			if (execute) {
-				System.out.println("Nie znaleziono tabeli Pracownicy...");
-				System.out.println("Tworzenie nowej tabeli.");
-				System.out.println("Pomyślnie utworzono table pracowników w bazie");
-			} else {
-				System.out.println("Pomyślnie połączono z tabelą pracowników w bazie");
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Nie udało się odnaleźć lub utworzyć tabeli prcowników w bazie.");
+            if (statement.execute(createUserTableQuery)) {
+                logger.info("Nie znaleziono tabeli Pracownicy...");
+                logger.info("Tworzenie nowej tabeli.");
+                logger.info("Pomyślnie utworzono tabele pracowników w bazie");
+            } else {
+                logger.info("Pomyślnie połączono z tabelą pomysłów w bazie");
+            }
+        } catch (SQLException e) {
+            logger.error("Nie udało się odnaleźć lub utworzyć tabeli pracowników w bazie: {}.", e.getCause(), e);
 		} finally {
 
 		}
@@ -99,7 +95,7 @@ public class UserDaoImpl implements UserDao {
 
 		String addUserQuery = "INSERT INTO Pracownicy VALUES (NULL, ?, ?, ?, ?, ?, ?)";
 
-		System.out.println("Dodawanie urzytkownika do bazy...");
+		logger.info("Dodawanie użytkownika do bazy...");
 
 		try {
 
@@ -112,10 +108,9 @@ public class UserDaoImpl implements UserDao {
 			prepareStatement.setInt(6, user.getIsAdmin());
 			prepareStatement.executeUpdate();
 
-			System.out.println("Pomyślnie dodano użytkownika do bazy danych.");
+			logger.info("Pomyślnie dodano użytkownika do bazy danych.");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Nie udało się dodać użytkownika do bazy.");
+			logger.error("Nie udało się dodać użytkownika do bazy: {}.", e.getCause(), e);
 		}
 		return false;
 	}
@@ -125,7 +120,7 @@ public class UserDaoImpl implements UserDao {
 
 		String getUserQuery = "SELECT * FROM Pracownicy WHERE id = '" + id + "';";
 
-		System.out.println("Pobieranie danych pracownika z bazy...");
+        logger.info("Pobieranie danych pracownika z bazy...");
 
 		try {
 
@@ -146,12 +141,11 @@ public class UserDaoImpl implements UserDao {
 			user.setIsAdmin(isAdmin);
 			result.close();
 
-			System.out.println("Pomyślnie pobrano dane pracownika o id: " + id + "z bazy.");
+            logger.trace("Pomyślnie pobrano dane pracownika o id: {} z bazy.", id);
 
 			return user;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Nie udało się pobrać danych pracownika o id" + id + " z bazy.");
+            logger.error("Nie udało się pobrać danych pracownika {} w bazie: {}", id, e.getCause(), e);
 		}
 		return null;
 	}
@@ -163,7 +157,7 @@ public class UserDaoImpl implements UserDao {
 
 		String getUserQuery = "SELECT * FROM Pracownicy";
 
-		System.out.println("Pobieranie wszystkich pracowników z bazy...");
+        logger.trace("Pobieranie wszystkich pracowników z bazy...");
 
 		try {
 
@@ -184,13 +178,12 @@ public class UserDaoImpl implements UserDao {
 				user.setIsAdmin(isAdmin);
 				users.add(user);
 			}
-			System.out.println("Pomyślnie pobrano wszystkich pracowników z bazy danych.");
+            logger.trace("Pomyślnie pobrano wszystkich pracowników z bazy danych.");
 			result.close();
 
 			return users;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Nie udało się pobrać listy pracowników z bazy.");
+            logger.error("Nie udało się pobrać listy pracowników z bazy: {}.", e.getCause(), e);
 		}
 		return null;
 	}
@@ -202,36 +195,32 @@ public class UserDaoImpl implements UserDao {
 				+ user.getLastName() + "', Login = '" + user.getLogin() + "', Wydział = '" + user.getFaculty()
 				+ "', Hasło = '" + user.getPassword() + "', Administrator ='" + user.getIsAdmin() + "' WHERE id = '"
 				+ user.getId() + "'";
-		System.out.println("Aktualizacja pracownika o id: " + user.getId());
+        logger.info("Aktualizacja pracownika o id: " + user.getId());
 		try {
 
 			statement.executeUpdate(updateUserQuery);
 
-			System.out.println("Pracownik został pomyślnie zaktualizowany");
+            logger.info("Pracownik został pomyślnie zaktualizowany");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Nieudana aktualizacja pracownika: {}.", e.getCause(), e);
 		}
 		return false;
 	}
 
 	@Override
 	public boolean removeUser(int id) {
-
-		System.out.println("Usuwanie pracownika o id: " + id + "...");
+        logger.trace("Usuwanie pracownika o id: {}.", id);
 
 		String removeUserQuery = "DELETE FROM Pracownicy WHERE id='" + id + "'";
 		try {
-
 			statement.executeUpdate(removeUserQuery);
 
-			System.out.println("Pomyślnie usunięto pracownika.");
+            logger.trace("Pomyślnie usunięto pracownika.");
 		} catch (SQLException e) {
-			System.out.println("Nie udało się usunąć pracownika.");
-			e.printStackTrace();
+            logger.error("Nie udało się usunąć pracownika: {}.", e.getCause(), e);
 		}
-
+        //FIXME: always false?
 		return false;
-
 	}
 
 	@Override
@@ -245,7 +234,7 @@ public class UserDaoImpl implements UserDao {
 
 			return pass;
 		} catch (SQLException e) {
-			System.out.println("Nieprawidłowy login");
+            logger.error("Nieprawidłowy login: {}.", e.getCause(), e);
 			return null;
 		}
 	}
@@ -261,7 +250,7 @@ public class UserDaoImpl implements UserDao {
 			return isAdmin;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+            logger.error("Nieudane wybranie admina: {}.", e.getCause(), e);
 			return -1;
 		}
 	}
@@ -275,9 +264,8 @@ public class UserDaoImpl implements UserDao {
 			int id = result.getInt(1);
 			return id;
 		} catch (SQLException e) {
-			System.out.println("Nieprawidłowy login");
+            logger.error("Nieprawidłowy login: {}.", e.getCause(), e);
 			return 0;
 		}
 	}
-
 }
