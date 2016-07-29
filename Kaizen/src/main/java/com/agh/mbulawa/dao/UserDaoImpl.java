@@ -1,12 +1,8 @@
 package com.agh.mbulawa.dao;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,69 +10,26 @@ import com.agh.mbulawa.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends ADao implements UserDao {
 
-	private static final String DB_DRIVER = "org.sqlite.JDBC";
-	private static final String DB_URL = "jdbc:sqlite:kaizen.db";
+    private static final String QUERY = "CREATE TABLE IF NOT EXISTS Pracownicy (id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + " Imię varchar(255), Nazwisko varchar(255), Login varchar(255), Wydział varchar(255), Hasło varchar(255), Administrator INTEGER)";
 
     static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
-	private Connection connection;
-	private Statement statement;
 
 	public UserDaoImpl() {
-		try {
-			File file = new File("kaizen.db");
-
-			if (file.exists()) {
-				logger.info("Wszystko ustawione prawidłowo");
-			} else {
-				Class.forName(UserDaoImpl.DB_DRIVER);
-				createConnection();
-				createTable();
-				User user = new User("Main", "Main", "Main", "Main", "Main");
-				user.setIsAdmin(2);
-				addUser(user);
-				closeConnection();
-			}
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+        createConnection();
+        createTable();
+        User user = new User("Main", "Main", "Main", "Main", "Main");
+        user.setIsAdmin(2);
+        addUser(user);
+        closeConnection();
 	}
 
-	public void createConnection() {
-
-		logger.trace("Nawiązywanie połączenia z bazą...");
-
-		try {
-			connection = DriverManager.getConnection(DB_URL);
-			statement = connection.createStatement();
-			logger.trace("Pomyślnie połączono z bazą.");
-        } catch (SQLException e) {
-            logger.error("Nie udało się nawiązać połaczenia z bazą: {}.", e.getCause(), e);
-        }
-	}
-
-	public void closeConnection() {
-		logger.trace("Zamykanie połączenia z bazą...");
-
-		try {
-			statement.close();
-			connection.close();
-
-            logger.trace("Poprawnie zakończono połączenie z bazą.");
-        } catch (SQLException e) {
-            logger.error("Wystąpił błąd podczas kończenia połączenia: {}.", e.getCause(), e);
-        }
-	}
-
-	public void createTable() {
-		String createUserTableQuery = "CREATE TABLE IF NOT EXISTS Pracownicy (id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ " Imię varchar(255), Nazwisko varchar(255), Login varchar(255), Wydział varchar(255), Hasło varchar(255), Administrator INTEGER)";
-		try {
-
-            if (statement.execute(createUserTableQuery)) {
+    public void createTable() {
+        try {
+            if (super.executeOrNot(QUERY)) {
                 logger.info("Nie znaleziono tabeli Pracownicy...");
                 logger.info("Tworzenie nowej tabeli.");
                 logger.info("Pomyślnie utworzono tabele pracowników w bazie");
@@ -85,21 +38,19 @@ public class UserDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             logger.error("Nie udało się odnaleźć lub utworzyć tabeli pracowników w bazie: {}.", e.getCause(), e);
-		} finally {
+        } finally {
 
-		}
-	}
+        }
+    }
+
 
 	@Override
 	public boolean addUser(User user) {
-
 		String addUserQuery = "INSERT INTO Pracownicy VALUES (NULL, ?, ?, ?, ?, ?, ?)";
-
 		logger.info("Dodawanie użytkownika do bazy...");
 
 		try {
-
-			PreparedStatement prepareStatement = connection.prepareStatement(addUserQuery);
+			PreparedStatement prepareStatement = super.prepareStatementFrom(addUserQuery);
 			prepareStatement.setString(1, user.getFirstName());
 			prepareStatement.setString(2, user.getLastName());
 			prepareStatement.setString(3, user.getLogin());
@@ -124,7 +75,7 @@ public class UserDaoImpl implements UserDao {
 
 		try {
 
-			ResultSet result = statement.executeQuery(getUserQuery);
+			ResultSet result = super.run(getUserQuery);
 			result.next();
 
 			String firstName = result.getString(2);
@@ -161,7 +112,7 @@ public class UserDaoImpl implements UserDao {
 
 		try {
 
-			ResultSet result = statement.executeQuery(getUserQuery);
+			ResultSet result = super.run(getUserQuery);
 			while (result.next()) {
 
 				int id = result.getInt(1);
@@ -198,7 +149,7 @@ public class UserDaoImpl implements UserDao {
         logger.info("Aktualizacja pracownika o id: " + user.getId());
 		try {
 
-			statement.executeUpdate(updateUserQuery);
+			super.update(updateUserQuery);
 
             logger.info("Pracownik został pomyślnie zaktualizowany");
 		} catch (SQLException e) {
@@ -213,7 +164,7 @@ public class UserDaoImpl implements UserDao {
 
 		String removeUserQuery = "DELETE FROM Pracownicy WHERE id='" + id + "'";
 		try {
-			statement.executeUpdate(removeUserQuery);
+			super.update(removeUserQuery);
 
             logger.trace("Pomyślnie usunięto pracownika.");
 		} catch (SQLException e) {
@@ -228,7 +179,7 @@ public class UserDaoImpl implements UserDao {
 
 		String getUserPassQuery = "SELECT Hasło FROM Pracownicy WHERE Login = '" + login + "'";
 		try {
-			ResultSet result = statement.executeQuery(getUserPassQuery);
+			ResultSet result = super.run(getUserPassQuery);
 			result.next();
 			String pass = result.getString(1);
 
@@ -244,7 +195,7 @@ public class UserDaoImpl implements UserDao {
 
 		String getUserRightsQuery = "SELECT Administrator FROM Pracownicy WHERE id = '" + id + "'";
 		try {
-			ResultSet result = statement.executeQuery(getUserRightsQuery);
+			ResultSet result = super.run(getUserRightsQuery);
 			result.next();
 			int isAdmin = result.getInt(1);
 			return isAdmin;
@@ -259,7 +210,7 @@ public class UserDaoImpl implements UserDao {
 	public int getUserIdByLogin(String login) {
 		String getUserIdQuery = "SELECT Id FROM Pracownicy WHERE Login = '" + login + "'";
 		try {
-			ResultSet result = statement.executeQuery(getUserIdQuery);
+			ResultSet result = super.run(getUserIdQuery);
 			result.next();
 			int id = result.getInt(1);
 			return id;

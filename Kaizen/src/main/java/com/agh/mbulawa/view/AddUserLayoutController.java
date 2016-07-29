@@ -70,9 +70,7 @@ public class AddUserLayoutController {
 			User user = new User(firstNameField.getText(), lastNameField.getText(), loginField.getText(),
 					facultyField.getText(), passField.getText());
 			UserDaoImpl userDaoImpl = new UserDaoImpl();
-			userDaoImpl.createConnection();
-			userDaoImpl.createTable();
-
+//FIXME: wycięte
 			if (isAdmin) {
 				user.setIsAdmin(1);
 			}

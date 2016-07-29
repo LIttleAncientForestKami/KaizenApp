@@ -100,15 +100,11 @@ public class Main extends Application {
 				ideaDaoImpl.closeConnection();
 
 				UserDaoImpl userDaoImpl = new UserDaoImpl();
-				userDaoImpl.createConnection();
-				userDaoImpl.createTable();
-
+//FIXME: wycięte
 				User user = new User("Main", "Main", "Main", "Main", "Main");
-
 				user.setIsAdmin(2);
 
 				userDaoImpl.addUser(user);
-
 				userDaoImpl.closeConnection();
 			}
 		};
